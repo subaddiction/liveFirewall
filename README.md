@@ -6,7 +6,8 @@ Match patterns on apache2 log files and ban malicious IPs
 
 
 
-How to:
+##How to:
+
 -Setup apache2 daily logrotation
 
 -Setup scripts parameters (filenames and daily max attempts permitted for IP address)

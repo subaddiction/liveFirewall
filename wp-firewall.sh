@@ -7,7 +7,7 @@ MAXATTEMPTS=10
 
 iptables-restore $DEFRULES
 
-cat /var/log/apache2/other_vhosts_access.log | grep -i "wp-login.php" | awk '{print $2}'|uniq -c > $FILE
+cat /var/log/apache2/other_vhosts_access.log | grep -i "wp-login.php" | awk '{print $2}'| sort | uniq -dc > $FILE
 
 ATTACKER=false
 ATTACK=false
