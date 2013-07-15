@@ -1,14 +1,24 @@
 #!/bin/bash
 
+# Configuration
 FILE="/etc/iptables/firewall/log/wp-login.log"
 DEFRULES="/etc/iptables/firewall/rules/default"
 RULES="/etc/iptables/firewall/rules/wordpress"
 MAXATTEMPTS=10
 
+# Restore default  iptables
 iptables-restore $DEFRULES
 
-cat /var/log/apache2/other_vhosts_access.log | grep -i "wp-login.php" | awk '{print $2}'| sort | uniq -dc > $FILE
+# Count requests per ip matching a pattern
+cat /var/log/apache2/other_vhosts_access.log | grep -i "wp-login.php" | awk '{print $2}' | sort | uniq -dc > $FILE
 
+# General example
+# cat /path/to/apache/logs | grep -i "malicious_pattern" | awk '{print $ip_position_in_log_line}' | sort | uniq -dc > $FILE
+
+# Plesk example
+# find /var/www/vhosts -name "access_log.processed" -print0 | xargs -0 cat |grep -i "wp-login.php" | awk '{print $1}' | sort | uniq -dc > $FILE
+
+# Ban malicious IPs
 ATTACKER=false
 ATTACK=false
 
