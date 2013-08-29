@@ -10,7 +10,7 @@ MAXATTEMPTS=10
 iptables-restore $DEFRULES
 
 # Count requests per ip matching a pattern
-cat /var/log/apache2/other_vhosts_access.log | grep -i "wp-login.php" | awk '{print $2}' | sort | uniq -dc > $FILE
+cat /var/log/apache2/other_vhosts_access.log | grep "GET /wp-login.php" | awk '{print $2}' | sort | uniq -dc > $FILE
 
 # General example
 # cat /path/to/apache/logs | grep -i "malicious_pattern" | awk '{print $ip_position_in_log_line}' | sort | uniq -dc > $FILE
