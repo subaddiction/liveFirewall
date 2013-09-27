@@ -3,16 +3,19 @@
 # Configuration
 FILE="/etc/iptables/firewall/log/wordpress.log"
 RULES="/etc/iptables/firewall/rules/wordpress"
+LOGFILE="/var/log/apache2/other_vhosts_access.log"
 MAXATTEMPTS=10
 
 # Count requests per ip matching a pattern
-cat /var/log/apache2/other_vhosts_access.log | grep "GET /wp-login.php" | awk '{print $2}' | sort | uniq -dc > $FILE
+cat "$LOGFILE" | grep "GET /wp-login.php" | awk '{print $2}' | sort | uniq -dc > $FILE
 
-# General example
-# cat /path/to/apache/logs | grep -i "malicious_pattern" | awk '{print $ip_position_in_log_line}' | sort | uniq -dc > $FILE
+# Debian example
+# LOGFILE="/var/log/apache2/other_vhosts_access.log"
+# cat "$LOGFILE" | grep -i "malicious_pattern" | awk '{print $ip_position_in_log_line}' | sort | uniq -dc > $FILE
 
 # Plesk example
-# find /var/www/vhosts -name "access_log.processed" -print0 | xargs -0 cat |grep -i "wp-login.php" | awk '{print $1}' | sort | uniq -dc > $FILE
+# LOGFILE=$(find /var/www/vhosts -name "access_log.processed" -print0 | xargs -0 cat)
+# cat "$LOGFILE" |grep -i "wp-login.php" | awk '{print $1}' | sort | uniq -dc > $FILE
 
 # Ban malicious IPs
 ATTACKER=false
