@@ -3,7 +3,7 @@
 # Configuration
 FILE="/etc/iptables/firewall/log/postfix.log"
 RULES="/etc/iptables/firewall/rules/postfix"
-MAXATTEMPTS=10
+MAXATTEMPTS=4
 
 # Count requests per ip matching a pattern
 cat /usr/local/psa/var/log/maillog | grep -i "Message delivery request rate limit exceeded" | awk '{print $15}' | sed 's/.*\[//g' | sed 's/\]//g' | sort | uniq -c > $FILE
@@ -26,8 +26,9 @@ do
 	#echo "$ATTACKER"
 	if [ "$ATTACK" -gt "$MAXATTEMPTS" ]
 	then
-	echo "$ATTACKER attempted $ATTACK times: BANNED"
-	iptables -A INPUT -p tcp --dport 80 -s "$ATTACKER" -j REJECT
+	echo "$ATTACKER exceeded message delivery request rate $ATTACK times: BANNED"
+	iptables -A INPUT -p tcp --dport 25 -s "$ATTACKER" -j REJECT
+	iptables -A INPUT -p tcp --dport 995 -s "$ATTACKER" -j REJECT
 	fi
 done < $FILE
 
