@@ -1,16 +1,12 @@
 #!/bin/bash
 
 # Configuration
-FILE="/etc/iptables/firewall/log/wp-login.log"
-DEFRULES="/etc/iptables/firewall/rules/default"
-RULES="/etc/iptables/firewall/rules/wordpress"
+FILE="/etc/iptables/firewall/log/postfix.log"
+RULES="/etc/iptables/firewall/rules/postfix"
 MAXATTEMPTS=10
 
-# Restore default  iptables
-iptables-restore $DEFRULES
-
 # Count requests per ip matching a pattern
-cat /var/log/apache2/other_vhosts_access.log | grep "GET /wp-login.php" | awk '{print $2}' | sort | uniq -dc > $FILE
+cat /usr/local/psa/var/log/maillog | grep -i "Message delivery request rate limit exceeded" | awk '{print $15}' | sed 's/.*\[//g' | sed 's/\]//g' | sort | uniq -c > $FILE
 
 # General example
 # cat /path/to/apache/logs | grep -i "malicious_pattern" | awk '{print $ip_position_in_log_line}' | sort | uniq -dc > $FILE
@@ -30,9 +26,9 @@ do
 	#echo "$ATTACKER"
 	if [ "$ATTACK" -gt "$MAXATTEMPTS" ]
 	then
-		echo "$ATTACKER attempted $ATTACK times: BANNED"
-		iptables -A INPUT -p tcp --dport 80 -s "$ATTACKER" -j REJECT
-	fi	
+	echo "$ATTACKER attempted $ATTACK times: BANNED"
+	iptables -A INPUT -p tcp --dport 80 -s "$ATTACKER" -j REJECT
+	fi
 done < $FILE
 
 iptables-save > $RULES

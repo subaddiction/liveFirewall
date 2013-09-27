@@ -1,19 +1,20 @@
 #liveFirewall
 
-Simple apache2 log analyzer with firewall setup
+Simple log analyzer with firewall setup
 
-Match patterns on apache2 log files and ban malicious IPs
+Match patterns on log files and ban malicious IPs
 
 
 
 ##How to:
 
--Setup apache2 daily logrotation
+-Setup daily logrotation
 
--Setup scripts parameters (filenames and daily max attempts permitted for IP address)
+-Setup scripts parameters (filenames, daily max attempts permitted for IP address)
 
--Fire scripts with daily cronjobs (set it some minutes before cron.daily runs)
+-Setup a cronjob executing cron.sh
 
 
 
 wp-firewall.sh - Ban IPs requesting "wp-login.php" more than 10 times per day
+centos-postfix-plesk-firewall.sh - Ban IPs exceeding postfix message delivery request rate
