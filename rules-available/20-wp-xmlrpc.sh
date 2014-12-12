@@ -20,6 +20,7 @@ do
 	then
 		echo "$ATTACKER attempted $ATTACK times: BANNED"
 		iptables -A INPUT -p tcp --dport 80 -s "$ATTACKER" -j REJECT
+		iptables -A INPUT -p tcp --dport 443 -s "$ATTACKER" -j REJECT
 	fi	
 done < $FILE
 
