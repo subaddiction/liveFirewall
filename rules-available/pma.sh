@@ -7,7 +7,7 @@ MAXATTEMPTS=10
 
 # Count requests per ip matching a pattern
 # In plesk we must iterate over all access_log files. matching "access_*log" includes ssl logs
-find /var/www/vhosts -name "access_*log" -exec grep -i "GET /\{1,3\}pma" {} \; > pma.tmp
+find /var/www/vhosts -name "access_*log" -exec grep -i "GET /\{1,3\}\(phpmyadmin\|pma\)" {} \; > pma.tmp
 cat pma.tmp | awk '{print $1}' | sort | uniq -dc > $FILE
 rm pma.tmp
 
