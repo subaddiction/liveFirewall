@@ -8,8 +8,8 @@ MAXATTEMPTS=10
 # Count requests per ip matching a pattern
 # In plesk we must iterate over all access_log files. matching "access_*log" includes ssl logs
 find /var/www/vhosts -name "access_*log" -exec grep -i "GET /\{1,3\}pma" {} \; > pma.tmp
-cat httpd.tmp | awk '{print $1}' | sort | uniq -dc > $FILE
-rm httpd.tmp
+cat pma.tmp | awk '{print $1}' | sort | uniq -dc > $FILE
+rm pma.tmp
 
 # Debian vhosts example
 # LOGFILE="/var/log/apache2/other_vhosts_access.log"
